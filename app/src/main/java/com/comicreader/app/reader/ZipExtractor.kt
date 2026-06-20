@@ -59,35 +59,13 @@ object ZipExtractor {
     }
 
     /**
-     * 对文件名做自然排序（同时处理字母和数字）
-     * 例: "page_2.jpg" < "page_10.jpg"
+     * 对文件名做自然排序，数字部分补零以便字符串比较
+     * 例: "page_2.jpg" -> "page_0000000002.jpg"
      */
-    private fun normalizeSortKey(name: String): List<Comparable<*>> {
-        val parts = mutableListOf<Comparable<*>>()
-        val buffer = StringBuilder()
-        var isDigit = false
-
-        for (ch in name) {
-            if (ch.isDigit()) {
-                if (!isDigit && buffer.isNotEmpty()) {
-                    parts.add(buffer.toString())
-                    buffer.clear()
-                }
-                isDigit = true
-                buffer.append(ch)
-            } else {
-                if (isDigit && buffer.isNotEmpty()) {
-                    parts.add(buffer.toString().toInt())
-                    buffer.clear()
-                }
-                isDigit = false
-                buffer.append(ch.lowercaseChar())
-            }
-        }
-        if (buffer.isNotEmpty()) {
-            parts.add(if (isDigit) buffer.toString().toInt() else buffer.toString())
-        }
-
-        return parts
+    private fun normalizeSortKey(name: String): String {
+        // 把文件名中的数字替换为固定宽度（补零），实现自然排序
+        return name.replace(Regex("""\d+""")) {
+            it.value.padStart(10, '0')
+        }.lowercase()
     }
 }

@@ -8,7 +8,7 @@
     <string name="confirm">确定</string>
     <string name="no_comics">还没有漫画，点击右下角按钮导入</string>
     <string name="reading_mode">阅读模式</string>
-    <string name="page_indicator">%d / %d</string>
+    <string name="page_indicator" formatted="false">%d / %d</string>
     <string name="importing">正在导入…</string>
     <string name="import_success">导入成功</string>
     <string name="import_failed">导入失败</string>
